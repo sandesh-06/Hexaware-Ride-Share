@@ -91,6 +91,7 @@ const styles = StyleSheet.create({
   mainText: {
     fontSize: 16,
     fontWeight: '500',
+    color: "black"
   },
   subText: {
     fontSize: 14,

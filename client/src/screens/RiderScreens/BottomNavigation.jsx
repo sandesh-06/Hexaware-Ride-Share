@@ -1,13 +1,30 @@
 // BottomNav.js
 import React from 'react';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
+import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { View, Text } from 'react-native';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import Home from './Home';
+import SearchRide from './SearchRide';
 
 const Tab = createBottomTabNavigator();
+const Stack = createNativeStackNavigator();
 
-const HomeScreen = () => <Home/>;
+const HomeStack = () => (
+  <Stack.Navigator>
+    <Stack.Screen 
+      name="Home" 
+      component={Home} 
+      options={{ headerShown: false }} 
+    />
+    <Stack.Screen 
+      name="Search Ride" 
+      component={SearchRide} 
+      options={{ headerShown: false }} 
+    />
+  </Stack.Navigator>
+);
+
 const RidesScreen = () => <View><Text>Rides</Text></View>;
 const PaymentsScreen = () => <View><Text>Payments</Text></View>;
 const HelpScreen = () => <View><Text>Help</Text></View>;
@@ -30,8 +47,8 @@ const BottomTabs = () => (
   }}
 >
     <Tab.Screen
-      name="Home"
-      component={HomeScreen}
+      name="HomeTab"
+      component={HomeStack}
       options={{
         tabBarIcon: ({ color, size }) => <Icon name="home" color={color} size={size} />,
       }}
