@@ -138,7 +138,7 @@ const styles = StyleSheet.create({
     elevation: 2,
   },
   selectedRow: {
-    backgroundColor: '#CCCCCC',
+    backgroundColor: '#CBD0E5',
     color: 'white',
   },
   label: {

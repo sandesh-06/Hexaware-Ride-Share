@@ -1,10 +1,10 @@
 import React from 'react';
-import {BottomTabs, Feedback, Maps, PaymentSummary, RideDetails, RideResults, SearchRide, TripDetails} from './index'
+import {BottomTabs, Feedback, PaymentSummary, RideDetails, RideResults, SearchRide, TripDetails} from './index'
 import {createNativeStackNavigator} from '@react-navigation/native-stack';
 
 const Stack = createNativeStackNavigator();
 
-const MainApp = () => {
+const RiderMainApp = () => {
   return (
     <Stack.Navigator>
       <Stack.Screen 
@@ -47,4 +47,4 @@ const MainApp = () => {
   );
 };
 
-export default MainApp;
+export default RiderMainApp;

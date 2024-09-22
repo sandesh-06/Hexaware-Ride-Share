@@ -11,43 +11,54 @@ import Icon from 'react-native-vector-icons/MaterialIcons';
 import {Maps} from './index';
 import {useNavigation} from '@react-navigation/native';
 
-export default function TripDetails({route}) {
-  const {trip} = route.params || {};
-  const getCurrentTime = () => {
-    const date = new Date();
-    let hours = date.getHours();
-    const minutes = date.getMinutes();
-    const ampm = hours >= 12 ? 'pm' : 'am';
-
-    hours = hours % 12;
-    hours = hours ? hours : 12;
-
-    const minutesFormatted = minutes < 10 ? `0${minutes}` : minutes;
-    return `${hours}:${minutesFormatted}${ampm}`;
-  };
-  const currTime = getCurrentTime();
+export default function DriverTripDetails({route}) {
+  const {trip} = route.params;
   const navigation = useNavigation();
+
+  // Sample data for riders
+  const riders = [
+    {
+      name: 'Aravind JK',
+      designation: 'Product Manager',
+      image: require('../../images/person1.jpg'),
+    },
+    {
+      name: 'Ramakrishna',
+      designation: 'Human Resource',
+      image: require('../../images/person2.jpg'),
+    },
+    {
+      name: 'Sandesh S',
+      designation: 'Software Developer',
+      image: require('../../images/person3.jpg'),
+    },
+    {
+      name: 'Naveen C',
+      designation: 'Product Designer',
+      image: require('../../images/person4.jpg'),
+    },
+  ];
+  const displayedRiders = riders.slice(0, parseInt(trip.bookedSeats));
   return (
     <View style={styles.container}>
       {/* Map */}
       <View style={{width: '100%', height: '40%'}}>
         <Maps />
       </View>
+
+      {/* Trip Title */}
       <View style={styles.title}>
-        <Text
-          style={{color: 'black', fontSize: 25, fontWeight: 'condensedBold'}}>
-          Your ride is confirmed
+        <Text style={{color: 'black', fontSize: 25, fontWeight: '600'}}>
+          Scheduled Ride for {trip.date}
         </Text>
       </View>
+
       {/* Trip Details */}
       <ScrollView style={{paddingHorizontal: 20}}>
         {/* Trip Info */}
         <View style={styles.tripInfo}>
           <View style={styles.pickupContainer}>
-            <Text style={styles.pickupText}>
-              Pickup at {trip.rideInfo.pickUpLocation}
-            </Text>
-            <Text style={styles.priceText}>₹{trip.rideInfo.price}</Text>
+            <Text style={styles.pickupText}>Trip starts at {trip.time}</Text>
           </View>
 
           <View style={styles.rideDetails}>
@@ -60,10 +71,8 @@ export default function TripDetails({route}) {
                   color="#000"
                 />
                 <View>
-                  <Text style={styles.time}>{currTime}</Text>
-                  <Text style={styles.address}>
-                    {trip.rideInfo.pickUpLocation}
-                  </Text>
+                  <Text style={styles.time}>From</Text>
+                  <Text style={styles.address}>{trip.from}</Text>
                 </View>
               </View>
 
@@ -78,49 +87,34 @@ export default function TripDetails({route}) {
                   color="#000"
                 />
                 <View>
-                  <Text style={styles.time}>{trip.rideInfo.dropOff}</Text>
-                  <Text style={styles.address}>
-                    {trip.rideInfo.dropLocation}
-                  </Text>
+                  <Text style={styles.time}>To</Text>
+                  <Text style={styles.address}>{trip.destination}</Text>
                 </View>
               </View>
             </View>
           </View>
         </View>
 
-        {/* Driver Info */}
+        {/* Riders Info */}
         <Text style={{fontSize: 18, fontWeight: '600', color: 'black'}}>
-          Driver
+          Riders
         </Text>
-        <View style={styles.driverInfo}>
-          <Image
-            source={trip.driverInfo.image}
-            style={styles.driverImage}
-            resizeMode="contain"
-          />
-          <View style={styles.driverText}>
-            <Text style={styles.driverName}>
-              {trip.driverInfo.driverName} ({trip.carInfo.carName})
-            </Text>
-            <Text style={styles.driverDetails}>
-              {trip.carInfo.carNo} · {trip.carInfo.totalSeats} seats
-            </Text>
-            <Text style={styles.driverRating}>
-              {trip.driverInfo.ratings} · {trip.driverInfo.totalRides} rides
-            </Text>
-          </View>
+        <View style={styles.ridersList}>
+          {displayedRiders.map((rider, index) => (
+            <View key={index} style={styles.riderInfo}>
+              <Image
+                source={rider.image}
+                style={styles.riderImage}
+                resizeMode="contain"
+              />
+              <View style={styles.riderText}>
+                <Text style={styles.riderName}>{rider.name}</Text>
+                <Text style={styles.riderDesignation}>{rider.designation}</Text>
+              </View>
+            </View>
+          ))}
         </View>
 
-        {/* Buttons */}
-        <View style={styles.buttonContainer}>
-          <TouchableOpacity
-            style={[styles.actionButton, {backgroundColor: '#2E45FA'}]}
-            onPress={() => navigation.navigate('Payment Summary', { totalFare: trip.rideInfo.price, trip: trip })}
-        >
-            <Text style={styles.actionButtonText}>Call Driver</Text>
-            <Icon style={styles.icon} name="phone" size={28} color="white" />
-          </TouchableOpacity>
-        </View>
         {/* Help Section */}
         <View style={styles.helpSection}>
           <Text style={styles.helpTitle}>Help</Text>
@@ -134,10 +128,12 @@ export default function TripDetails({route}) {
             ))}
           </View>
         </View>
+
+        {/* Cancel Trip Button */}
         <View style={styles.buttonContainer}>
           <TouchableOpacity
             style={[styles.actionButton, {backgroundColor: '#FF6B6B'}]}>
-            <Text style={styles.actionButtonText}>Cancel Ride</Text>
+            <Text style={styles.actionButtonText}>Cancel Trip</Text>
             <Icon style={styles.icon} name="cancel" size={28} color="white" />
           </TouchableOpacity>
         </View>
@@ -149,7 +145,7 @@ export default function TripDetails({route}) {
 const helpItems = [
   {
     title: 'Find Lost Item',
-    description: 'We can help you get in touch with your driver',
+    description: 'We can help you get in touch with your riders',
     image: require('../../images/HelpSection/findlostitem.png'),
   },
   {
@@ -158,7 +154,7 @@ const helpItems = [
     image: require('../../images/HelpSection/reportsafety.png'),
   },
   {
-    title: 'Proivde App Feedback',
+    title: 'Provide App Feedback',
     description: 'Your thoughts about this initiative by Hexaware',
     image: require('../../images/HelpSection/appfeedback.png'),
   },
@@ -174,31 +170,20 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: 'white',
   },
-  tripInfo: {
-    backgroundColor: 'white',
-    // padding: 15,
-    borderRadius: 8,
-    marginBottom: 20,
-  },
   title: {
     justifyContent: 'center',
     alignItems: 'center',
     paddingVertical: 10,
   },
-  pickupContainer: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    marginVertical: 10,
+  tripInfo: {
+    backgroundColor: 'white',
+    borderRadius: 8,
+    marginBottom: 20,
   },
   pickupText: {
     fontSize: 18,
     fontWeight: '500',
     color: '#888',
-  },
-  priceText: {
-    fontSize: 18,
-    fontWeight: 'bold',
-    color: 'black',
   },
   rideDetails: {
     borderTopWidth: 1,
@@ -207,7 +192,6 @@ const styles = StyleSheet.create({
   },
   rideRowContainer: {
     position: 'relative',
-    // marginBottom: 5,
   },
   rideRow: {
     flexDirection: 'row',
@@ -237,55 +221,31 @@ const styles = StyleSheet.create({
     width: 2,
     backgroundColor: '#777',
   },
-  driverInfo: {
+  ridersList: {
+    marginVertical: 20,
+  },
+  riderInfo: {
     flexDirection: 'row',
     alignItems: 'center',
-    marginBottom: 20,
+    marginBottom: 15,
   },
-  driverImage: {
+  riderImage: {
     width: 50,
     height: 50,
     borderRadius: 25,
     marginRight: 15,
   },
-  driverText: {
+  riderText: {
     justifyContent: 'center',
   },
-  driverName: {
+  riderName: {
     fontSize: 16,
     fontWeight: 'bold',
     color: 'black',
   },
-  driverDetails: {
+  riderDesignation: {
     fontSize: 14,
-    color: '#888',
-  },
-  driverRating: {
-    fontSize: 14,
-    color: '#888',
-  },
-  buttonContainer: {
-    marginBottom: 15,
-    flexDirection: 'row',
-    gap: 2,
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-  actionButton: {
-    paddingVertical: 10,
-    paddingHorizontal: 20,
-    borderRadius: 8,
-    alignItems: 'center',
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    alignItems: 'center',
-    width: '100%',
-    marginBottom: 7,
-  },
-  actionButtonText: {
-    fontSize: 17,
-    color: 'white',
-    fontWeight: 'bold',
+    color: '#777',
   },
   helpSection: {
     marginBottom: 20,
@@ -328,5 +288,27 @@ const styles = StyleSheet.create({
     fontSize: 12,
     color: '#777',
     textAlign: 'center',
+  },
+  buttonContainer: {
+    marginBottom: 15,
+    flexDirection: 'row',
+    gap: 2,
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  actionButton: {
+    paddingVertical: 10,
+    paddingHorizontal: 20,
+    borderRadius: 8,
+    alignItems: 'center',
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    width: '100%',
+    marginBottom: 7,
+  },
+  actionButtonText: {
+    fontSize: 17,
+    color: 'white',
+    fontWeight: 'bold',
   },
 });
