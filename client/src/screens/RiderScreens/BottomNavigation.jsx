@@ -3,7 +3,8 @@ import React from 'react';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { View, Text } from 'react-native';
-import Icon from 'react-native-vector-icons/FontAwesome';
+// import Icon from 'react-native-vector-icons/FontAwesome';
+import Icon from 'react-native-vector-icons/MaterialIcons';
 import Home from './Home';
 import SearchRide from './SearchRide';
 
@@ -13,14 +14,14 @@ const Stack = createNativeStackNavigator();
 const HomeStack = () => (
   <Stack.Navigator>
     <Stack.Screen 
-      name="Home" 
+      name="HomeScreen" 
       component={Home} 
       options={{ headerShown: false }} 
     />
     <Stack.Screen 
       name="Search Ride" 
       component={SearchRide} 
-      options={{ headerShown: false }} 
+      // options={{ headerShown: false }} 
     />
   </Stack.Navigator>
 );
@@ -47,7 +48,7 @@ const BottomTabs = () => (
   }}
 >
     <Tab.Screen
-      name="HomeTab"
+      name="Home"
       component={HomeStack}
       options={{
         tabBarIcon: ({ color, size }) => <Icon name="home" color={color} size={size} />,
@@ -57,7 +58,7 @@ const BottomTabs = () => (
       name="Rides"
       component={RidesScreen}
       options={{
-        tabBarIcon: ({ color, size }) => <Icon name="car" color={color} size={size} />,
+        tabBarIcon: ({ color, size }) => <Icon name="directions-car" color={color} size={size} />,
       }}
     />
     <Tab.Screen
@@ -71,7 +72,7 @@ const BottomTabs = () => (
       name="Help"
       component={HelpScreen}
       options={{
-        tabBarIcon: ({ color, size }) => <Icon name="question-circle" color={color} size={size} />,
+        tabBarIcon: ({ color, size }) => <Icon name="help-outline" color={color} size={size} />,
       }}
     />
   </Tab.Navigator>

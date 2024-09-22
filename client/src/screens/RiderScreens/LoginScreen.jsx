@@ -14,10 +14,9 @@ const LoginScreen = ({navigation}) => {
     <View style={styles.outerContainer}>
       <View style={styles.titleBox}>
         <Text style={styles.title}>Hexaware</Text>
-        <Icon name="chevron-down" size={25} color="white" />
       </View>
       <Image
-        source={require('../../images/taxi.png')} // Dummy image URL
+        source={require('../../images/taxi1.jpg')} // Dummy image URL
         style={styles.image}
       />
       <View style={styles.container}>
@@ -28,7 +27,7 @@ const LoginScreen = ({navigation}) => {
         {/* Username Input */}
         <TextInput
           style={styles.input}
-          placeholder="Username"
+          placeholder="Employee/Intern ID"
           placeholderTextColor="#a1a1a1"
         />
 
@@ -46,7 +45,7 @@ const LoginScreen = ({navigation}) => {
         {/* Log In Button */}
         <TouchableOpacity
           style={styles.loginButton}
-          onPress={() => navigation.navigate('Rider')}>
+          onPress={() => navigation.replace('Rider')}>
           <Text style={styles.loginButtonText}>Log in</Text>
         </TouchableOpacity>
 
@@ -64,16 +63,17 @@ const styles = StyleSheet.create({
   titleBox: {
     height: 70,
     flexDirection: "row",
-    justifyContent: "space-between",
+    justifyContent: "center",
     alignItems: "center",
     backgroundColor: '#2E45FA',
     paddingHorizontal: 20,
   },
   outerContainer: {
-    height: "100%"
+    height: "100%",
+    backgroundColor: "white"
   },
   container: {
-    backgroundColor: '#f5f5f5',
+    backgroundColor: 'white',
     alignItems: 'center',
     paddingHorizontal: 20,
     marginTop: 20,
@@ -82,7 +82,7 @@ const styles = StyleSheet.create({
     width: '100%',
     height: 200,
     resizeMode: 'cover',
-    marginBottom: 20,
+    marginBottom: 5,
   },
   title: {
     color: "white",
@@ -91,7 +91,7 @@ const styles = StyleSheet.create({
   },
   signInText: {
     color: 'black',
-    fontSize: 20,
+    fontSize: 30,
     fontWeight: 'bold',
     marginBottom: 20,
     textAlign: 'center',
@@ -104,6 +104,7 @@ const styles = StyleSheet.create({
     paddingHorizontal: 15,
     fontSize: 16,
     marginBottom: 15,
+    color: 'black',
   },
   forgotPassword: {
     alignSelf: 'flex-end',
